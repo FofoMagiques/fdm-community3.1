@@ -1,51 +1,48 @@
 version: '3.8'
 
+# Configuration Docker Compose simplifiée pour Synology DS218+
+# Compatible avec les limitations des NAS Synology
+
 services:
   fdm-community:
     build: .
     container_name: fdm-community
     restart: unless-stopped
     
-    # Configuration pour Synology DS218+ (sans limites CPU non supportées)
+    # Port mapping
     ports:
       - "3001:3001"
     
-    # Limites de mémoire uniquement (CPU non supporté sur DS218+)
-    mem_limit: 512m
-    memswap_limit: 512m
+    # Limites de mémoire uniquement (pas de CPU sur NAS)
+    mem_limit: 400m
     
+    # Variables d'environnement
     environment:
       - NODE_ENV=production
       - PORT=3001
-      - NODE_OPTIONS=--max-old-space-size=384
+      - NODE_OPTIONS=--max-old-space-size=320
+      - UV_THREADPOOL_SIZE=2
       - DISCORD_TOKEN=${DISCORD_TOKEN:-MTM5MzQwNjQwNjg2NTk3NzQ3Nw.GVXMXj.apuAo9qscEnDI2G_5XoRpc1oEiGN6jygSb7LQ4}
       - DISCORD_GUILD_ID=${DISCORD_GUILD_ID:-681602280893579342}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-FofoTheBest}
       - TZ=Europe/Paris
     
+    # Volumes simples
     volumes:
-      # Données persistantes sur NAS
       - ./data:/app/data
       - ./logs:/app/logs
     
-    networks:
-      - fdm-network
-    
-    # Santé adaptée pour NAS
+    # Vérification de santé basique
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/api/discord/stats"]
-      interval: 60s
-      timeout: 10s
+      interval: 120s
+      timeout: 15s
       retries: 3
-      start_period: 30s
+      start_period: 60s
     
-    # Logs optimisés
+    # Logs limités
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
-        max-file: "3"
-
-networks:
-  fdm-network:
-    driver: bridge
+        max-size: "5m"
+        max-file: "2"

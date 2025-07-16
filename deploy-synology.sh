@@ -149,22 +149,42 @@ build_and_start() {
         COMPOSE_CMD="docker compose"
     fi
     
+    # Détecter la version de Docker Compose et les limitations
+    log_info "Détection des capacités du système..."
+    
+    # Tester les limites CPU
+    if docker run --rm --cpus=0.5 alpine echo "test" &>/dev/null; then
+        log_info "Limites CPU supportées - utilisation de la configuration standard"
+        COMPOSE_FILE="docker-compose.yml"
+    else
+        log_warning "Limites CPU non supportées - utilisation de la configuration simplifiée"
+        COMPOSE_FILE="docker-compose.simple.yml"
+    fi
+    
     # Construire l'image
-    if $COMPOSE_CMD build --no-cache; then
+    if $COMPOSE_CMD -f $COMPOSE_FILE build --no-cache; then
         log_success "Image construite avec succès"
     else
         log_error "Erreur lors de la construction de l'image"
         exit 1
     fi
     
-    log_info "Démarrage du service..."
+    log_info "Démarrage du service avec $COMPOSE_FILE..."
     
     # Démarrer le service
-    if $COMPOSE_CMD up -d; then
+    if $COMPOSE_CMD -f $COMPOSE_FILE up -d; then
         log_success "Service démarré avec succès"
     else
         log_error "Erreur lors du démarrage du service"
-        exit 1
+        log_info "Tentative avec configuration de fallback..."
+        
+        # Essayer avec la configuration simple en cas d'échec
+        if $COMPOSE_CMD -f docker-compose.simple.yml up -d; then
+            log_success "Service démarré avec configuration simplifiée"
+        else
+            log_error "Échec avec toutes les configurations"
+            exit 1
+        fi
     fi
 }
 
