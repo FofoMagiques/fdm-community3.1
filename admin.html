@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - FDM Community</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--fdm-border);
+        }
+        
+        .admin-tab {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: none;
+            color: var(--fdm-muted);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .admin-tab.active {
+            color: var(--fdm-pink);
+            border-bottom-color: var(--fdm-pink);
+        }
+        
+        .admin-content {
+            display: none;
+        }
+        
+        .admin-content.active {
+            display: block;
+        }
+        
+        .admin-form {
+            background: rgba(31, 15, 30, 0.8);
+            border: 1px solid var(--fdm-border);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--fdm-light);
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--fdm-border);
+            border-radius: 0.5rem;
+            background-color: var(--fdm-dark);
+            color: var(--fdm-light);
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--fdm-pink);
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .events-list {
+            background: rgba(31, 15, 30, 0.8);
+            border: 1px solid var(--fdm-border);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+        
+        .event-item {
+            background: rgba(42, 21, 41, 0.8);
+            border: 1px solid var(--fdm-border);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .event-item h3 {
+            color: var(--fdm-light);
+            margin-bottom: 0.5rem;
+        }
+        
+        .event-meta {
+            color: var(--fdm-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .event-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-edit {
+            background: var(--fdm-gradient);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .btn-delete {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .login-form {
+            max-width: 400px;
+            margin: 5rem auto;
+            background: rgba(31, 15, 30, 0.8);
+            border: 1px solid var(--fdm-border);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+        
+        .downloads-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .downloads-table th,
+        .downloads-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--fdm-border);
+        }
+        
+        .downloads-table th {
+            background: rgba(233, 30, 99, 0.1);
+            color: var(--fdm-light);
+            font-weight: 600;
+        }
+        
+        .downloads-table td {
+            color: var(--fdm-muted);
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Formulaire de connexion -->
+        <div id="login-section" class="login-form">
+            <h2 style="text-align: center; color: var(--fdm-light); margin-bottom: 2rem;">
+                🔐 Connexion Admin FDM
+            </h2>
+            <div class="form-group">
+                <label for="admin-password">Mot de passe</label>
+                <input type="password" id="admin-password" placeholder="Mot de passe admin">
+            </div>
+            <button onclick="login()" class="btn btn-primary" style="width: 100%;">
+                Se connecter
+            </button>
+        </div>
+
+        <!-- Panel admin -->
+        <div id="admin-panel" class="hidden">
+            <div class="admin-header">
+                <h1 style="color: var(--fdm-light);">🎮 Panel Admin FDM</h1>
+                <button onclick="logout()" class="btn btn-outline">Déconnexion</button>
+            </div>
+
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="showTab('events')">📅 Événements</button>
+                <button class="admin-tab" onclick="showTab('downloads')">📥 Téléchargements</button>
+            </div>
+
+            <!-- Gestion des événements -->
+            <div id="events-content" class="admin-content active">
+                <div class="admin-form">
+                    <h3 style="color: var(--fdm-light); margin-bottom: 1.5rem;">
+                        ➕ Nouvel événement
+                    </h3>
+                    <form id="event-form">
+                        <input type="hidden" id="event-id">
+                        <div class="form-group">
+                            <label for="event-title">Titre</label>
+                            <input type="text" id="event-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-description">Description</label>
+                            <textarea id="event-description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="event-date">Date</label>
+                                <input type="date" id="event-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="event-time">Heure</label>
+                                <input type="time" id="event-time" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="event-category">Catégorie</label>
+                                <select id="event-category">
+                                    <option value="Gaming">Gaming</option>
+                                    <option value="Esport">Esport</option>
+                                    <option value="Social">Social</option>
+                                    <option value="Créatif">Créatif</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="event-max-participants">Participants max</label>
+                                <input type="number" id="event-max-participants" min="1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="event-has-download">
+                                <label for="event-has-download">A un téléchargement</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-download-text">Texte du bouton téléchargement</label>
+                            <input type="text" id="event-download-text" placeholder="Télécharger le launcher">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            💾 Enregistrer
+                        </button>
+                        <button type="button" onclick="resetForm()" class="btn btn-outline">
+                            🔄 Réinitialiser
+                        </button>
+                    </form>
+                </div>
+
+                <div class="events-list">
+                    <h3 style="color: var(--fdm-light); margin-bottom: 1.5rem;">
+                        📋 Événements existants
+                    </h3>
+                    <div id="events-container">
+                        <!-- Les événements seront chargés ici -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Téléchargements -->
+            <div id="downloads-content" class="admin-content">
+                <div class="events-list">
+                    <h3 style="color: var(--fdm-light); margin-bottom: 1.5rem;">
+                        📥 Historique des téléchargements
+                    </h3>
+                    <table class="downloads-table">
+                        <thead>
+                            <tr>
+                                <th>Pseudo</th>
+                                <th>Événement</th>
+                                <th>Date de téléchargement</th>
+                            </tr>
+                        </thead>
+                        <tbody id="downloads-tbody">
+                            <!-- Les téléchargements seront chargés ici -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isAuthenticated = false;
+        let events = [];
+
+        // Gestion de l'authentification
+        async function login() {
+            const password = document.getElementById('admin-password').value;
+            
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ password }),
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    isAuthenticated = true;
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('admin-panel').classList.remove('hidden');
+                    loadEvents();
+                    loadDownloads();
+                } else {
+                    alert('Mot de passe incorrect');
+                }
+            } catch (error) {
+                console.error('Erreur de connexion:', error);
+                alert('Erreur de connexion');
+            }
+        }
+
+        function logout() {
+            isAuthenticated = false;
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('admin-panel').classList.add('hidden');
+            document.getElementById('admin-password').value = '';
+        }
+
+        // Gestion des onglets
+        function showTab(tabName) {
+            // Masquer tous les contenus
+            document.querySelectorAll('.admin-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Désactiver tous les onglets
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activer l'onglet et le contenu sélectionnés
+            document.getElementById(`${tabName}-content`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Gestion des événements
+        async function loadEvents() {
+            try {
+                const response = await fetch('/api/events');
+                events = await response.json();
+                renderEvents();
+            } catch (error) {
+                console.error('Erreur lors du chargement des événements:', error);
+            }
+        }
+
+        function renderEvents() {
+            const container = document.getElementById('events-container');
+            container.innerHTML = events.map(event => `
+                <div class="event-item">
+                    <h3>${event.title}</h3>
+                    <div class="event-meta">
+                        📅 ${formatDate(event.date)} à ${event.time} | 
+                        👥 ${event.current_participants} participants
+                        ${event.max_participants ? ` / ${event.max_participants}` : ''}
+                    </div>
+                    <p style="color: var(--fdm-muted); margin-bottom: 1rem;">${event.description}</p>
+                    <div class="event-actions">
+                        <button onclick="editEvent(${event.id})" class="btn-edit">
+                            ✏️ Modifier
+                        </button>
+                        <button onclick="deleteEvent(${event.id})" class="btn-delete">
+                            🗑️ Supprimer
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function editEvent(eventId) {
+            const event = events.find(e => e.id === eventId);
+            if (event) {
+                document.getElementById('event-id').value = event.id;
+                document.getElementById('event-title').value = event.title;
+                document.getElementById('event-description').value = event.description;
+                document.getElementById('event-date').value = event.date;
+                document.getElementById('event-time').value = event.time;
+                document.getElementById('event-category').value = event.category;
+                document.getElementById('event-max-participants').value = event.max_participants || '';
+                document.getElementById('event-has-download').checked = event.has_download;
+                document.getElementById('event-download-text').value = event.download_text || '';
+            }
+        }
+
+        async function deleteEvent(eventId) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+                try {
+                    const response = await fetch(`/api/admin/events/${eventId}`, {
+                        method: 'DELETE',
+                    });
+                    
+                    if (response.ok) {
+                        await loadEvents();
+                        alert('Événement supprimé avec succès');
+                    } else {
+                        alert('Erreur lors de la suppression');
+                    }
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    alert('Erreur lors de la suppression');
+                }
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('event-form').reset();
+            document.getElementById('event-id').value = '';
+        }
+
+        // Gestion du formulaire d'événement
+        document.getElementById('event-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const eventData = {
+                title: document.getElementById('event-title').value,
+                description: document.getElementById('event-description').value,
+                date: document.getElementById('event-date').value,
+                time: document.getElementById('event-time').value,
+                category: document.getElementById('event-category').value,
+                max_participants: document.getElementById('event-max-participants').value || null,
+                has_download: document.getElementById('event-has-download').checked,
+                download_text: document.getElementById('event-download-text').value
+            };
+            
+            const eventId = document.getElementById('event-id').value;
+            const isEdit = eventId !== '';
+            
+            try {
+                const response = await fetch(`/api/admin/events${isEdit ? `/${eventId}` : ''}`, {
+                    method: isEdit ? 'PUT' : 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(eventData),
+                });
+                
+                if (response.ok) {
+                    await loadEvents();
+                    resetForm();
+                    alert(isEdit ? 'Événement modifié avec succès' : 'Événement créé avec succès');
+                } else {
+                    alert('Erreur lors de la sauvegarde');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la sauvegarde');
+            }
+        });
+
+        // Gestion des téléchargements
+        async function loadDownloads() {
+            try {
+                const response = await fetch('/api/admin/downloads');
+                const downloads = await response.json();
+                renderDownloads(downloads);
+            } catch (error) {
+                console.error('Erreur lors du chargement des téléchargements:', error);
+            }
+        }
+
+        function renderDownloads(downloads) {
+            const tbody = document.getElementById('downloads-tbody');
+            tbody.innerHTML = downloads.map(download => `
+                <tr>
+                    <td>${download.username}</td>
+                    <td>${download.event_title}</td>
+                    <td>${new Date(download.downloaded_at).toLocaleDateString('fr-FR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Gestion de la touche Entrée pour la connexion
+        document.getElementById('admin-password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>

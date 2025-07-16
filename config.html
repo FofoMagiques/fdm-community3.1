@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration - FDM Community</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .config-container {
+            max-width: 600px;
+            margin: 5rem auto;
+            padding: 2rem;
+            background: rgba(31, 15, 30, 0.8);
+            border: 1px solid var(--fdm-border);
+            border-radius: 1rem;
+        }
+        
+        .config-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--fdm-light);
+        }
+        
+        .config-section {
+            margin-bottom: 2rem;
+        }
+        
+        .config-section h3 {
+            color: var(--fdm-pink);
+            margin-bottom: 1rem;
+        }
+        
+        .config-section p {
+            color: var(--fdm-muted);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .config-input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--fdm-border);
+            border-radius: 0.5rem;
+            background-color: var(--fdm-dark);
+            color: var(--fdm-light);
+            font-family: inherit;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .config-input:focus {
+            outline: none;
+            border-color: var(--fdm-pink);
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
+        }
+        
+        .config-steps {
+            background: rgba(42, 21, 41, 0.8);
+            border: 1px solid var(--fdm-border);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .config-steps ol {
+            color: var(--fdm-light);
+            padding-left: 1.5rem;
+        }
+        
+        .config-steps li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .config-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .success-message {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid var(--fdm-green);
+            color: var(--fdm-green);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="config-container">
+        <div class="config-header">
+            <h1>🔧 Configuration FDM</h1>
+            <p>Configure ton serveur Discord pour les stats en temps réel</p>
+        </div>
+        
+        <div id="message-container"></div>
+        
+        <div class="config-section">
+            <h3>🎯 ID du serveur Discord</h3>
+            <div class="config-steps">
+                <p><strong>Comment obtenir l'ID de ton serveur Discord :</strong></p>
+                <ol>
+                    <li>Ouvre Discord et va sur ton serveur FDM</li>
+                    <li>Fais clic droit sur le nom du serveur</li>
+                    <li>Clique sur "Copier l'ID du serveur"</li>
+                    <li>Colle l'ID dans le champ ci-dessous</li>
+                </ol>
+                <p><em>Note : Tu dois avoir activé le "Mode développeur" dans les paramètres Discord → Avancé → Mode développeur</em></p>
+            </div>
+            <input type="text" id="guild-id" class="config-input" placeholder="ID du serveur Discord (ex: 123456789012345678)">
+        </div>
+        
+        <div class="config-section">
+            <h3>🔗 Lien d'invitation Discord</h3>
+            <p>Optionnel : Personnalise le lien d'invitation de ton serveur</p>
+            <input type="text" id="invite-link" class="config-input" placeholder="https://discord.gg/tonlien" value="https://discord.gg/uamaVGnVJ2">
+        </div>
+        
+        <div class="config-actions">
+            <button onclick="saveConfig()" class="btn btn-primary">
+                💾 Sauvegarder la configuration
+            </button>
+            <button onclick="testConfig()" class="btn btn-outline">
+                🧪 Tester la connexion
+            </button>
+        </div>
+        
+        <div class="config-section" style="margin-top: 2rem;">
+            <h3>📊 État actuel</h3>
+            <div id="status-container" style="color: var(--fdm-muted);">
+                Chargement...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Charger la configuration actuelle
+        async function loadCurrentConfig() {
+            try {
+                const response = await fetch('/api/discord/stats');
+                const stats = await response.json();
+                
+                const statusContainer = document.getElementById('status-container');
+                statusContainer.innerHTML = `
+                    <p>📊 Membres : ${stats.memberCount}</p>
+                    <p>🟢 En ligne : ${stats.onlineCount}</p>
+                    <p>⏰ Dernière mise à jour : ${new Date(stats.lastUpdate).toLocaleString('fr-FR')}</p>
+                `;
+            } catch (error) {
+                document.getElementById('status-container').innerHTML = 
+                    '<p style="color: #f44336;">❌ Erreur lors du chargement des stats</p>';
+            }
+        }
+        
+        async function saveConfig() {
+            const guildId = document.getElementById('guild-id').value.trim();
+            const inviteLink = document.getElementById('invite-link').value.trim();
+            
+            if (!guildId) {
+                showMessage('Veuillez entrer l\'ID du serveur Discord', 'error');
+                return;
+            }
+            
+            if (!/^\d{17,19}$/.test(guildId)) {
+                showMessage('L\'ID du serveur doit être un nombre de 17-19 chiffres', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/admin/config', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        guildId: guildId,
+                        inviteLink: inviteLink
+                    }),
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('Configuration sauvegardée ! Redémarre le serveur pour appliquer les changements.', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 3000);
+                } else {
+                    showMessage(data.error || 'Erreur lors de la sauvegarde', 'error');
+                }
+            } catch (error) {
+                showMessage('Erreur lors de la sauvegarde', 'error');
+            }
+        }
+        
+        async function testConfig() {
+            const guildId = document.getElementById('guild-id').value.trim();
+            
+            if (!guildId) {
+                showMessage('Veuillez entrer l\'ID du serveur Discord', 'error');
+                return;
+            }
+            
+            showMessage('Test de la connexion...', 'info');
+            
+            try {
+                const response = await fetch(`/api/admin/test-guild/${guildId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage(`✅ Connexion réussie ! Serveur : ${data.guildName} (${data.memberCount} membres)`, 'success');
+                } else {
+                    showMessage(`❌ ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showMessage('Erreur lors du test de connexion', 'error');
+            }
+        }
+        
+        function showMessage(message, type) {
+            const container = document.getElementById('message-container');
+            const className = type === 'success' ? 'success-message' : 
+                             type === 'error' ? 'error-message' : 'info-message';
+            
+            container.innerHTML = `<div class="${className}">${message}</div>`;
+            
+            if (type !== 'error') {
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 5000);
+            }
+        }
+        
+        // Charger la config au démarrage
+        loadCurrentConfig();
+    </script>
+</body>
+</html>

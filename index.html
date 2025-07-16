@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDM Community - Serveur Discord</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-container">
+                        <img src="image/Logo FDM V3.png" alt="FDM Logo" class="logo responsive-logo">
+                    </div>
+                    <h1 class="site-title">FDM Community</h1>
+                </div>
+                <div class="header-nav">
+                    <a href="#about" class="nav-link">À propos</a>
+                    <a href="#events" class="nav-link">Événements</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-particles"></div>
+            <div class="hero-glow"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-logo">
+                    <img src="image/Logo FDM V3.png" alt="Logo FDM" class="hero-logo-img responsive-logo">
+                </div>
+                
+                <h1 class="hero-title">
+                    <span class="title-line">Bienvenue chez</span>
+                    <span class="title-highlight">FDM</span>
+                </h1>
+                
+                <p class="hero-description">
+                    L'aventure FDM a commencé en février 2020 entre potes du lycée. Depuis, on a grandi pour devenir une vraie team soudée ! 
+                    Ici, pas de blabla, juste des sessions gaming épiques, des délires sans fin et une ambiance de malade. 
+                    Prêt à rejoindre la famille ? 🎮
+                </p>
+                
+                <div class="hero-actions">
+                    <button id="join-server-btn" class="btn btn-primary">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0189 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+                        </svg>
+                        Rejoindre le Discord
+                    </button>
+                    
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="member-count">95</span>
+                            <span class="stat-label">membres</span>
+                        </div>
+                        <div class="stat-divider">•</div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="online-count">12</span>
+                            <span class="stat-label">en ligne</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Server Profile Section -->
+    <section class="server-profile" id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Notre petite histoire</h2>
+                <p class="section-subtitle">De potes de lycée à team gaming légendaire</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-value">95</div>
+                    <div class="stat-label">Membres actifs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎮</div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Jeux principaux</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-value">Feb 2020</div>
+                    <div class="stat-label">Création</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-value">∞</div>
+                    <div class="stat-label">Fun garanti</div>
+                </div>
+            </div>
+
+            <div class="server-info-card">
+                <div class="info-header">
+                    <span class="info-icon">🎯</span>
+                    <h3>Pourquoi FDM ?</h3>
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <h4>Notre ADN</h4>
+                        <p>Gaming entre vrais potes, zéro prise de tête</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Ambiance</h4>
+                        <p>Délires garantis, bonne humeur obligatoire 😎</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Nos games</h4>
+                        <p>LoL, Valorant, Minecraft, CS2, et bien d'autres</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Communauté</h4>
+                        <p>100% française, 100% conviviale 🇫🇷</p>
+                    </div>
+                </div>
+                <div class="info-description">
+                    <h4>L'histoire FDM</h4>
+                    <p>
+                        Tout a commencé le 24 février 2020 avec une bande de lycéens passionnés de gaming. 
+                        Ce qui n'était qu'un petit groupe d'amis s'est transformé en une véritable communauté ! 
+                        Aujourd'hui, FDM c'est des sessions gaming quotidiennes, des tournois endiablés, 
+                        des collaborations épiques et surtout... une famille ! Alors si tu cherches des potes pour 
+                        t'éclater, bienvenue à la maison ! 🏠
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section class="events" id="events">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Nos prochains événements</h2>
+                <p class="section-subtitle">Rejoins-nous pour des sessions gaming légendaires</p>
+            </div>
+
+            <div id="events-container">
+                <div class="events-upcoming">
+                    <h3 class="events-section-title">
+                        <span class="section-icon">🎮</span>
+                        Événements à venir
+                    </h3>
+                    <div class="events-grid" id="upcoming-events">
+                        <!-- Events will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div id="no-events" class="no-events" style="display: none;">
+                    <div class="no-events-icon">🎮</div>
+                    <h3>Aucun événement en cours</h3>
+                    <p>
+                        Mais t'inquiète pas, on cuisine toujours quelque chose ! 
+                        En attendant, hop sur le Discord pour des parties improvisées.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="footer-logo-container">
+                            <img src="image/Logo FDM V3.png" alt="FDM Logo" class="footer-logo-img responsive-logo">
+                        </div>
+                        <span class="footer-logo-text">FDM Community</span>
+                    </div>
+                    <p class="footer-description">
+                        La team qui déchire depuis 2020 ! Des potes, des jeux, 
+                        des délires et des moments inoubliables. 
+                        Rejoins la famille et viens kiffer avec nous !
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Liens utiles</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Règles du serveur</a></li>
+                        <li><a href="#">Guide débutant</a></li>
+                        <li><a href="#">L'équipe FDM</a></li>
+                        <li><a href="#">Signaler un souci</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Nous contacter</h4>
+                    <div class="footer-contact">
+                        <div class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            <span>contact@teamfdm.fr</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">🌐</span>
+                            <span>www.teamfdm.fr</span>
+                        </div>
+                        <div class="footer-social">
+                            <a href="#" class="social-link" title="Discord">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0189 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="social-link" title="Instagram">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 FDM Community. Tous droits réservés. • Fait avec ❤️ par des gamers pour des gamers depuis février 2020</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Username Modal -->
+    <div id="username-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Presque fini !</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Entre ton pseudo pour accéder au téléchargement :</p>
+                <input type="text" id="username-input" placeholder="Ton pseudo gaming..." maxlength="20">
+                <p class="modal-note">Ton pseudo sera utilisé pour l'événement</p>
+            </div>
+            <div class="modal-footer">
+                <button id="username-cancel" class="btn btn-outline">Annuler</button>
+                <button id="username-confirm" class="btn btn-primary">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

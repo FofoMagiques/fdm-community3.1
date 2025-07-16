@@ -1,0 +1,11 @@
+# Surveillance automatique du serveur FDM
+# Ajouter cette ligne à votre crontab avec : crontab -e
+
+# Vérifier le serveur FDM toutes les 5 minutes
+*/5 * * * * /volume1/web/FDM/monitor_fdm.sh monitor
+
+# Redémarrer automatiquement à 4h du matin chaque jour
+0 4 * * * /volume1/web/FDM/monitor_fdm.sh restart
+
+# Nettoyer les logs anciens chaque dimanche à 2h
+0 2 * * 0 find /volume1/web/FDM -name "*.log" -type f -mtime +7 -delete

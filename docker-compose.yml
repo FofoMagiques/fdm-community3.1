@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  fdm-community:
+    build: .
+    container_name: fdm-community
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DISCORD_TOKEN=${DISCORD_TOKEN:-MTM5MzQwNjQwNjg2NTk3NzQ3Nw.GVXMXj.apuAo9qscEnDI2G_5XoRpc1oEiGN6jygSb7LQ4}
+      - DISCORD_GUILD_ID=${DISCORD_GUILD_ID:-681602280893579342}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-FofoTheBest}
+    volumes:
+      # Persister la base de données
+      - fdm-data:/app/data
+      # Optionnel : logs persistants
+      - ./logs:/app/logs
+    networks:
+      - fdm-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/discord/stats"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  fdm-data:
+    driver: local
+
+networks:
+  fdm-network:
+    driver: bridge
